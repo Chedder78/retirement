@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Critical for mobile responsiveness -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+    
+    <!-- PWA Configuration -->
+    <meta name="theme-color" content="#2563eb">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Finance Dashboard">
+    
+    <title>Financial Freedom Dashboard</title>
+    <meta name="description" content="A professional tool to model your path to financial independence. Works perfectly on mobile and desktop.">
+    
+    <!-- Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="./styles/main.css">
+    
+    <!-- Favicon & Icons -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💰</text></svg>">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header Section -->
+        <header>
+            <div class="header-content">
+                <h1>💰 Financial Freedom Dashboard</h1>
+                <p class="subtitle">Model your path to a work-optional future. Every value is editable.</p>
+                <div class="mobile-indicator">
+                    <span class="mobile-only">📱 Mobile Optimized</span>
+                    <span class="desktop-only">💻 Desktop Version</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main>
+            <!-- Input Panel - Left Side -->
+            <section class="panel input-panel" aria-labelledby="inputs-heading">
+                <div class="panel-header">
+                    <h2 id="inputs-heading">⚙️ Your Financial Profile</h2>
+                    <button class="info-btn" aria-label="How to use this tool" title="How to use">
+                        ℹ️
+                    </button>
+                </div>
+
+                <!-- Input Grid - Dynamically filled by JavaScript -->
+                <div class="input-grid" id="inputGrid">
+                    <!-- JavaScript will populate this -->
+                    <div class="loading-inputs">
+                        <div class="skeleton-line"></div>
+                        <div class="skeleton-line"></div>
+                        <div class="skeleton-line"></div>
+                    </div>
+                </div>
+
+                <!-- Control Buttons -->
+                <div class="control-group">
+                    <button class="btn btn-primary" id="calculateBtn" aria-label="Calculate projection">
+                        <span class="btn-icon">🔄</span>
+                        <span class="btn-text">Calculate Projection</span>
+                        <span class="shortcut-hint">(Ctrl+Enter)</span>
+                    </button>
+                    <button class="btn btn-secondary" id="resetBtn" aria-label="Reset all values to defaults">
+                        <span class="btn-icon">↩️</span>
+                        <span class="btn-text">Reset to Defaults</span>
+                        <span class="shortcut-hint">(Esc)</span>
+                    </button>
+                </div>
+
+                <!-- Quick Tips -->
+                <div class="tips">
+                    <h3>💡 Quick Tips</h3>
+                    <ul>
+                        <li>Set <strong>windfall to $0</strong> if you don't have one</li>
+                        <li>Use <strong>Ctrl+Enter</strong> to quickly calculate</li>
+                        <li>Results update <strong>automatically</strong> as you type</li>
+                        <li>Works in <strong>portrait & landscape</strong> mode</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Results Panel - Right Side -->
+            <section class="panel results-panel" aria-labelledby="results-heading">
+                <div class="panel-header">
+                    <h2 id="results-heading">📈 Your Financial Projection</h2>
+                    <div class="last-updated" id="lastUpdated">
+                        Updated just now
+                    </div>
+                </div>
+
+                <!-- Summary Cards -->
+                <div class="summary-cards" id="summaryCards">
+                    <!-- JavaScript will populate this -->
+                    <div class="card loading">
+                        <div class="skeleton-circle"></div>
+                        <div class="skeleton-line"></div>
+                    </div>
+                    <div class="card loading">
+                        <div class="skeleton-circle"></div>
+                        <div class="skeleton-line"></div>
+                    </div>
+                    <div class="card loading">
+                        <div class="skeleton-circle"></div>
+                        <div class="skeleton-line"></div>
+                    </div>
+                </div>
+
+                <!-- Chart Container -->
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3>Portfolio Growth vs. Expenses</h3>
+                        <div class="chart-legend">
+                            <span class="legend-item portfolio-color">● Portfolio</span>
+                            <span class="legend-item expenses-color">● Expenses</span>
+                        </div>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="projectionChart" 
+                                aria-label="Interactive chart showing portfolio growth and expense projection over time" 
+                                role="img">
+                        </canvas>
+                    </div>
+                    <div class="chart-tips">
+                        <p><strong>Hover or tap</strong> on the chart to see yearly details.</p>
+                        <p><strong>Pinch to zoom</strong> on mobile devices.</p>
+                    </div>
+                </div>
+
+                <!-- Assumptions & Details -->
+                <div class="assumptions">
+                    <details>
+                        <summary><strong>🔍 How This Calculation Works</strong></summary>
+                        <div class="assumption-content">
+                            <p>This projection models:</p>
+                            <ul>
+                                <li><strong>Monthly investments</strong> with compound growth</li>
+                                <li><strong>Annual windfall</strong> until your specified end year</li>
+                                <li><strong>Living expenses</strong> increasing with inflation each year</li>
+                                <li><strong>Retirement income</strong> using the 4% withdrawal rule</li>
+                            </ul>
+                            <p><em>Note: This is a projection tool. Actual market returns will vary.</em></p>
+                        </div>
+                    </details>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <div class="footer-content">
+                <p>Built with ❤️ for your financial independence. 
+                   <span class="print-only">Open on mobile for the best experience.</span>
+                </p>
+                <div class="footer-links">
+                    <button class="footer-btn" id="exportBtn" aria-label="Export data as JSON">
+                        📤 Export Data
+                    </button>
+                    <button class="footer-btn" id="printBtn" aria-label="Print this projection">
+                        🖨️ Print View
+                    </button>
+                    <button class="footer-btn" id="installBtn" aria-label="Install as app" style="display:none;">
+                        📱 Install App
+                    </button>
+                </div>
+                <p class="footer-note">
+                    Version 2.0 • Optimized for mobile • 
+                    <a href="#" id="refreshLink" style="color: #2563eb; text-decoration: none;">⟳ Refresh</a>
+                </p>
+            </div>
+        </footer>
+
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="spinner"></div>
+            <p>Calculating your financial future...</p>
+        </div>
+    </div>
+
+    <!-- Application Script -->
+    <script src="./scripts/app.js"></script>
+    
+    <!-- Optional: PWA Service Worker -->
+    <script>
+        // Register service worker for PWA capabilities
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .catch(err => console.log('ServiceWorker registration failed: ', err));
+            });
+        }
+        
+        // Install prompt for PWA
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('installBtn').style.display = 'block';
+        });
+        
+        document.getElementById('installBtn')?.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    document.getElementById('installBtn').style.display = 'none';
+                }
+                deferredPrompt = null;
+            }
+        });
+        
+        // Handle refresh
+        document.getElementById('refreshLink')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.location.reload();
+        });
+    </script>
+</body>
+</html>
